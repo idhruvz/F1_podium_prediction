@@ -51,8 +51,6 @@ The EDA explores:
 - Podium finishes are highly imbalanced compared to non-podium finishes.
 - Team strength varies by era due to constructor dominance cycles.
 
----
-
 ## 4. Feature Engineering
 
 Time-aware rolling features were created to approximate driver and team **form** and **momentum**.
@@ -83,4 +81,109 @@ Time-aware rolling features were created to approximate driver and team **form**
   Team DNFs in the last 5 races  
 
 All rolling features are computed in **sorted time order** to strictly avoid **data leakage**.
+
+## 5. Machine Learning
+
+### 5.1 Train/Test Split
+
+- A **time-based train/test split** was used.
+- Older seasons were used for training.
+- Newer seasons were used for testing.
+- This setup simulates **real-world future race prediction** and prevents data leakage.
+
+### 5.2 Models Used
+
+Two models were trained and compared:
+
+- **Logistic Regression**
+  - Used as a baseline linear classifier  
+  - Helped verify basic feature usefulness
+
+- **Random Forest (Final Model)**
+  - Captures non-linear relationships  
+  - Handles interactions between driver form, grid and team performance  
+  - Delivered significantly better performance than Logistic Regression  
+
+ **Final Random Forest Performance:**
+
+- ROC–AUC ≈ **0.95**
+- Strong recall for the **podium class**
+- Stable performance on unseen test seasons
+
+---
+
+## 6. Weather Impact Analysis (Exploratory)
+
+Since the dataset did not include official weather labels:
+
+- A **proxy-based list of historically wet races** was manually created.
+- Races were labelled as:
+  - `Dry = 0`
+  - `Wet = 1`
+
+The following comparisons were performed:
+
+- **DNF rate: Wet vs Dry**
+- **Average position change (Grid − Finish): Wet vs Dry**
+
+ **Important Limitation:**
+
+- Wet races were limited in number
+- Weather labels were approximate
+- Results were treated as **exploratory only**
+- Weather was **not used as a predictive feature** in the model
+
+
+## 7. Streamlit Dashboard
+
+A full interactive **Streamlit dashboard** was built to showcase the model and analysis.
+
+### 7.1 Podium Prediction Tab
+
+- User inputs:
+  - Grid position
+  - Driver recent performance
+  - Constructor recent performance
+- Outputs:
+  - Podium probability (%)
+  - Text-based interpretation:
+    - High likelihood
+    - Moderate likelihood
+    - Low likelihood
+
+### 7.2 Model & Data Insights Tab
+
+- Podium probability vs grid position plot
+- Random Forest feature importance
+- Model interpretation explaining:
+  - Role of grid
+  - Driver form impact
+  - Constructor performance influence
+  - Reliability penalties
+
+### 7.3 Weather Impact Analysis Tab
+
+- Dry vs Wet race summary table
+- DNF rate comparison plot
+- Position gain comparison plot
+- Explanation of sample-size limitations
+
+
+## 8. Technology Stack
+
+- **Programming Language:** Python  
+- **Data Handling:** Pandas, NumPy  
+- **Machine Learning:** Scikit-learn  
+- **Visualization:** Matplotlib  
+- **Dashboard:** Streamlit  
+- **Model Saving:** Joblib  
+
+
+## 9. How to Run the Project Locally
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/idhruvz/F1_podium_prediction.git
+   cd F1_podium_prediction
+
 
