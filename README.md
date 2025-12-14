@@ -181,11 +181,4 @@ A full interactive **Streamlit dashboard** was built to showcase the model and a
 - **Model Saving:** Joblib  
 
 
-## 9. How to Run the Project Locally
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/idhruvz/F1_podium_prediction.git
-   cd F1_podium_prediction
-
 
